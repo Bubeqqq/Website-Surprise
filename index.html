@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ola niszczy Maturę</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fffafa, #ffe4e1);
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+            overflow: hidden;
+        }
+        h1 {
+            text-align: center;
+            color: #c71585;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .daily-string {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+            color: #ff69b4;
+            padding: 20px;
+            border: 2px solid #ff1493;
+            border-radius: 15px;
+            background: rgba(255, 240, 245, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-container {
+            margin: 20px 0;
+        }
+        .progress-bar {
+            background-color: #fffafa;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+            height: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: zoomIn 0.8s ease;
+        }
+        .progress-bar span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, #ffcce0, #ffb6c1);
+            width: 0;
+            transition: width 0.3s ease, background 0.5s ease;
+        }
+        .progress-percentage {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background: linear-gradient(90deg, #ff69b4, #ff1493);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #ff1493, #ff69b4);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .cube {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 240, 245, 0.4);
+            animation: floatCube 10s linear infinite;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .particle {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 105, 180, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fadeOut 2s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatCube {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            to {
+                transform: translateY(-10vh) rotate(360deg);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation" id="backgroundAnimation"></div>
+    <h1>Powodzenia na Maturze 2025 Ola!</h1>
+    <div class="daily-string" id="dailyString"></div>
+    <div class="progress-container" id="progressContainer"></div>
+    <button onclick="increaseProgress()">Uczyłam się 15 minut</button>
+
+    <script>
+        // Daily string array
+        const dailyStrings = [
+            "Spajdi?",
+            "Jeremy zawsze tam jest, zawsze ci pomoże",
+            "Trzymam kciuki!",
+            "Zawszę ci pomogę, zawsze możesz pisać",
+            "Co to takie małe zadanka dla ciebie?",
+            "Porażki tylko cię wzmacniają przed tym, co ważne",
+            "Matura? Nie martwię się",
+            "Podbój niczym Aleksander Wielki",
+            "Te procenty wyglądają imponująco"
+        ];
+
+        const examsNames = [
+            "Polski",
+            "Angielski",
+            "Matematyka",
+            "Rozszerzony Polski",
+            "Rozszerzona Historia",
+            "Rozszerzony Angielski"
+        ];
+
+        // Display today's string based on the date
+        const todayIndex = new Date().getDate() % dailyStrings.length;
+        document.getElementById('dailyString').textContent = dailyStrings[todayIndex];
+
+        // Generate random progress bars
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBars = [];
+
+        // Generate random progress bars
+        for (let i = 0; i < 6; i++) {
+            const label = document.createElement('div');
+            label.textContent = examsNames[i];
+            label.style.marginBottom = '5px';
+            label.style.fontWeight = 'bold';
+            label.style.color = '#c71585';
+            progressContainer.appendChild(label);
+
+            const progressBar = document.createElement('div');
+            progressBar.classList.add('progress-bar');
+
+            const progressSpan = document.createElement('span');
+
+            const percentageLabel = document.createElement('div');
+            percentageLabel.classList.add('progress-percentage');
+            percentageLabel.style.position = 'absolute';
+            percentageLabel.style.right = '10px';
+            percentageLabel.style.top = '0';
+            percentageLabel.style.bottom = '0';
+            percentageLabel.style.display = 'flex';
+            percentageLabel.style.alignItems = 'center';
+            percentageLabel.style.color = '#c71585';
+            percentageLabel.style.fontWeight = 'bold';
+
+            const randomValue = Math.floor(Math.random() * 31 + 70);
+            progressSpan.style.width = `${randomValue}%`;
+            progressSpan.style.background = updateGradient(randomValue); // Corrected gradient calculation
+            percentageLabel.textContent = `${randomValue}%`;
+
+            progressBar.appendChild(progressSpan);
+            progressBar.appendChild(percentageLabel);
+
+            progressContainer.appendChild(progressBar);
+            progressBars.push({ progressSpan, percentageLabel });
+        }
+
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"],
+                  v = n % 100;
+            return s[(v - 20) % 10] || s[v] || s[0];
+        }
+
+        function updateGradient(progress) {
+            // Lighter pink gradient
+            const startColor = [255, 255, 255]; // Very light pink
+            const endColor = [231, 122, 147]; // dark pink
+
+            const r = Math.floor(startColor[0] + (endColor[0] - startColor[0]) * (progress / 100));
+            const g = Math.floor(startColor[1] + (endColor[1] - startColor[1]) * (progress / 100));
+            const b = Math.floor(startColor[2] + (endColor[2] - startColor[2]) * (progress / 100));
+
+            return `linear-gradient(90deg, rgb(${r}, ${g}, ${b}), rgb(${endColor[0]}, ${endColor[1]}, ${endColor[2]}))`;
+        }
+
+       // Increase progress by a few percentage points
+        function increaseProgress() {
+            progressBars.forEach(bar => {
+                const currentWidth = parseFloat(bar.progressSpan.style.width);
+                const newWidth = Math.min(currentWidth + Math.random() * 10, 100);
+                bar.progressSpan.style.width = `${newWidth}%`;
+                bar.progressSpan.style.background = updateGradient(newWidth); // Corrected gradient update
+                bar.percentageLabel.textContent = `${Math.round(newWidth)}%`;
+            });
+        }
+
+        // Create moving cubes in the background
+        const backgroundAnimation = document.getElementById('backgroundAnimation');
+
+        for (let i = 0; i < 50; i++) {
+            const cube = document.createElement('div');
+            cube.classList.add('cube');
+
+            const size = Math.random() * 20 + 10; // Random size
+            cube.style.width = `${size}px`;
+            cube.style.height = `${size}px`;
+
+            cube.style.left = `${Math.random() * 100}vw`;
+            cube.style.animationDuration = `${Math.random() * 10 + 5}s`;
+            cube.style.animationDelay = `${Math.random() * 5}s`;
+
+            backgroundAnimation.appendChild(cube);
+        }
+
+        // Particle animation for cursor
+        document.addEventListener('mousemove', e => {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.top = `${e.clientY}px`;
+            particle.style.left = `${e.clientX}px`;
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
